@@ -33,5 +33,10 @@ body {
   display: flex;
   align-items: center;
 }
+.contributors__error-message {
+  font-size: 30px;
+  text-align: center;
+  color: #196b19;
+}
 
 /*# sourceMappingURL=style.css.map */
