@@ -1,0 +1,46 @@
+$background-color: #000000;
+$border-color: #DCDCDC;
+$text-color: #196b19;
+$link-hover: #218d21;
+$title-color: #145314;
+
+body {
+  background-color: $background-color;
+}
+
+.contributors {
+  
+  &__title {
+    padding: 10px;
+    font-size: 35px;
+    color: $title-color;
+    text-align: center;
+  }
+  &__wrapper {
+    padding: 10px;
+  }
+  &__avatar {
+    max-width: 100px;
+    max-height: 100px;
+    border: solid $border-color 3px;
+    border-radius: 20px;
+  }
+  &__text {
+    display: inline;
+    font-size: 25px;
+    color: $text-color;
+  }
+  &__link {
+    &:hover {
+      color: $link-hover;
+    }
+  }
+  &__header {
+    font-size: 30px;
+    color: $title-color;
+  }
+  &__element-wrapper {
+    display: flex;
+    align-items: center;
+  }
+}

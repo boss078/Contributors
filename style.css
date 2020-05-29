@@ -1,0 +1,37 @@
+body {
+  background-color: #000000;
+}
+
+.contributors__title {
+  padding: 10px;
+  font-size: 35px;
+  color: #145314;
+  text-align: center;
+}
+.contributors__wrapper {
+  padding: 10px;
+}
+.contributors__avatar {
+  max-width: 100px;
+  max-height: 100px;
+  border: solid #DCDCDC 3px;
+  border-radius: 20px;
+}
+.contributors__text {
+  display: inline;
+  font-size: 25px;
+  color: #196b19;
+}
+.contributors__link:hover {
+  color: #218d21;
+}
+.contributors__header {
+  font-size: 30px;
+  color: #145314;
+}
+.contributors__element-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/*# sourceMappingURL=style.css.map */
