@@ -1,3 +1,5 @@
+/* eslint-disable jquery/no-hide */
+/* eslint-disable jquery/no-show */
 function serverError(error) {
   const serverErrorWrapper = $('<div></div>').addClass('row');
   const serverErrorMessage = $('<div></div>').text(`Data could not be received due to server error\nError message: ${error}`);
@@ -40,7 +42,7 @@ $(() => {
           elementLogin.text(object.login);
           loginWrapper.append(elementLogin);
 
-          const imageWrapper = $('<div></div>').addClass('col-2');
+          const imageWrapper = $('<div></div>').addClass('col');
           imageWrapper.addClass('contributors__element-wrapper');
           const elementImage = $('<img></img>').addClass('contributors__avatar');
           elementImage.attr('src', object.avatar_url);
@@ -54,7 +56,22 @@ $(() => {
           elementUrl.attr('href', object.html_url);
           urlWrapper.append(elementUrl);
 
-          elementWrapper.append(imageWrapper, loginWrapper, urlWrapper);
+          const groupWrapper = $('<div></div>').addClass('col');
+          groupWrapper.addClass('contributors__element-wrapper');
+          const elementGroup = $('<div></div>').addClass('contributors__text');
+          elementGroup.text('Gold');
+          elementWrapper.addClass('gold');
+          if (object.contributions <= 15) {
+            elementGroup.text('Silver');
+            elementWrapper.addClass('silver');
+          }
+          if (object.contributions <= 5) {
+            elementGroup.text('Bronse');
+            elementWrapper.addClass('bronse');
+          }
+          groupWrapper.append(elementGroup);
+
+          elementWrapper.append(imageWrapper, loginWrapper, urlWrapper, groupWrapper);
           $('#loaded_data_ptr').append(elementWrapper);
         }
       } else {
@@ -64,4 +81,30 @@ $(() => {
     (error) => {
       noDataError(error);
     });
+  $('#group-selector').change(() => {
+    const selectedValue = $('#group-selector').find('option').filter(':selected');
+    switch (selectedValue[0].innerText) {
+      default:
+      case 'All':
+        $('.gold').show();
+        $('.silver').show();
+        $('.bronse').show();
+        break;
+      case 'Gold':
+        $('.gold').show();
+        $('.silver').hide();
+        $('.bronse').hide();
+        break;
+      case 'Silver':
+        $('.gold').hide();
+        $('.silver').show();
+        $('.bronse').hide();
+        break;
+      case 'Bronse':
+        $('.gold').hide();
+        $('.silver').hide();
+        $('.bronse').show();
+        break;
+    }
+  });
 });
