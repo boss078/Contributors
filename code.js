@@ -46,32 +46,25 @@ $(() => {
       if (data.constructor === Array) {
         for (let index = 0; index < data.length; index += 1) {
           const object = data[index];
-          const elementWrapper = $('<div></div>').addClass('row');
-          elementWrapper.addClass('contributors__wrapper');
+          const elementWrapper = $('<div></div>').addClass('row contributors__wrapper');
 
-          const imageWrapper = $('<div></div>').addClass('col-2');
-          imageWrapper.addClass('contributors__element-wrapper');
+          const imageWrapper = $('<div></div>').addClass('col-2 contributors__element-wrapper');
           const elementImage = $('<img></img>').addClass('contributors__avatar');
           elementImage.attr('src', object.avatar_url);
           imageWrapper.append(elementImage);
 
-          const loginWrapper = $('<div></div>').addClass('col-3');
-          loginWrapper.addClass('contributors__element-wrapper');
-          const elementLogin = $('<div></div>').addClass('contributors__text');
-          elementLogin.addClass('login');
+          const loginWrapper = $('<div></div>').addClass('col-3 contributors__element-wrapper');
+          const elementLogin = $('<div></div>').addClass('contributors__text login');
           elementLogin.text(object.login);
           loginWrapper.append(elementLogin);
 
-          const urlWrapper = $('<div></div>').addClass('col-5');
-          urlWrapper.addClass('contributors__element-wrapper');
-          const elementUrl = $('<a></a>').addClass('contributors__text');
-          elementUrl.addClass('contributors__link');
+          const urlWrapper = $('<div></div>').addClass('col-4 contributors__element-wrapper');
+          const elementUrl = $('<a></a>').addClass('contributors__text contributors__link');
           elementUrl.text(object.html_url);
           elementUrl.attr('href', object.html_url);
           urlWrapper.append(elementUrl);
 
-          const groupWrapper = $('<div></div>').addClass('col-2');
-          groupWrapper.addClass('contributors__element-wrapper');
+          const groupWrapper = $('<div></div>').addClass('col-2 contributors__element-wrapper');
           const elementGroup = $('<div></div>').addClass('contributors__text');
           elementGroup.text('Gold');
           elementWrapper.addClass('gold');
@@ -88,8 +81,38 @@ $(() => {
           }
           groupWrapper.append(elementGroup);
 
-          elementWrapper.append(imageWrapper, loginWrapper, urlWrapper, groupWrapper);
+          const moreWrapper = $('<div></div>').addClass('col-1 contributors__element-wrapper');
+          const elementMore = $('<button></button>').addClass('btn btn-secondary');
+          elementMore.attr('data-toggle', 'collapse');
+          elementMore.attr('data-target', `#info-${index}`);
+          elementMore.text('More');
+          moreWrapper.append(elementMore);
+
+          const hiddenInfoWrapper = $('<div>/<div>').addClass('collapse');
+          hiddenInfoWrapper.attr('id', `info-${index}`);
+
+          const row1 = $('<div></div>').addClass('row');
+          const name = $('<div></div>').addClass('col contributors__text');
+          const location = $('<div></div>').addClass('col contributors__text');
+          const row2 = $('<div></div>').addClass('row');
+          const company = $('<div></div>').addClass('col contributors__text');
+          const email = $('<div></div>').addClass('col contributors__text');
+
+          fetch(object.url).then((objectResponse) => objectResponse.json())
+            .then((objectData) => {
+              name.text(`Name: ${objectData.name}`);
+              location.text(`Location: ${objectData.location}`);
+              company.text(`Company: ${objectData.company}`);
+              email.text(`Email: ${objectData.email}`);
+            });
+
+          row1.append(name, location);
+          row2.append(company, email);
+          hiddenInfoWrapper.append(row1, row2);
+
+          elementWrapper.append(imageWrapper, loginWrapper, urlWrapper, groupWrapper, moreWrapper);
           $('#loaded_data_ptr').append(elementWrapper);
+          $('#loaded_data_ptr').append(hiddenInfoWrapper);
         }
       } else {
         noDataError(`${data.message}`);
