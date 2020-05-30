@@ -1,5 +1,8 @@
 /* eslint-disable jquery/no-hide */
 /* eslint-disable jquery/no-show */
+
+let dataArray;
+
 function serverError(error) {
   const serverErrorWrapper = $('<div></div>').addClass('row');
   const serverErrorMessage = $('<div></div>').text(`Data could not be received due to server error\nError message: ${error}`);
@@ -16,6 +19,16 @@ function noDataError(error) {
   serverErrorMessage.addClass('contributors__error-message');
   serverErrorWrapper.append(serverErrorMessage);
   $('#loaded_data_ptr').append(serverErrorWrapper);
+}
+
+function storeToArray() {
+  const foundObjects = $('.bronse, .silver, .gold');
+  dataArray = foundObjects;
+  foundObjects.detach();
+}
+
+function moveFromArray() {
+  $('#loaded_data_ptr').append(dataArray);
 }
 
 $(() => {
@@ -36,19 +49,20 @@ $(() => {
           const elementWrapper = $('<div></div>').addClass('row');
           elementWrapper.addClass('contributors__wrapper');
 
-          const loginWrapper = $('<div></div>').addClass('col');
-          loginWrapper.addClass('contributors__element-wrapper');
-          const elementLogin = $('<div></div>').addClass('contributors__text');
-          elementLogin.text(object.login);
-          loginWrapper.append(elementLogin);
-
-          const imageWrapper = $('<div></div>').addClass('col');
+          const imageWrapper = $('<div></div>').addClass('col-2');
           imageWrapper.addClass('contributors__element-wrapper');
           const elementImage = $('<img></img>').addClass('contributors__avatar');
           elementImage.attr('src', object.avatar_url);
           imageWrapper.append(elementImage);
 
-          const urlWrapper = $('<div></div>').addClass('col');
+          const loginWrapper = $('<div></div>').addClass('col-3');
+          loginWrapper.addClass('contributors__element-wrapper');
+          const elementLogin = $('<div></div>').addClass('contributors__text');
+          elementLogin.addClass('login');
+          elementLogin.text(object.login);
+          loginWrapper.append(elementLogin);
+
+          const urlWrapper = $('<div></div>').addClass('col-5');
           urlWrapper.addClass('contributors__element-wrapper');
           const elementUrl = $('<a></a>').addClass('contributors__text');
           elementUrl.addClass('contributors__link');
@@ -56,7 +70,7 @@ $(() => {
           elementUrl.attr('href', object.html_url);
           urlWrapper.append(elementUrl);
 
-          const groupWrapper = $('<div></div>').addClass('col');
+          const groupWrapper = $('<div></div>').addClass('col-2');
           groupWrapper.addClass('contributors__element-wrapper');
           const elementGroup = $('<div></div>').addClass('contributors__text');
           elementGroup.text('Gold');
@@ -64,10 +78,13 @@ $(() => {
           if (object.contributions <= 15) {
             elementGroup.text('Silver');
             elementWrapper.addClass('silver');
+            elementWrapper.removeClass('gold');
           }
           if (object.contributions <= 5) {
             elementGroup.text('Bronse');
             elementWrapper.addClass('bronse');
+            elementWrapper.removeClass('gold');
+            elementWrapper.removeClass('silver');
           }
           groupWrapper.append(elementGroup);
 
@@ -82,8 +99,7 @@ $(() => {
       noDataError(error);
     });
   $('#group-selector').change(() => {
-    const selectedValue = $('#group-selector').find('option').filter(':selected');
-    switch (selectedValue[0].innerText) {
+    switch ($('#group-selector').find('option').filter(':selected')[0].innerText) {
       default:
       case 'All':
         $('.gold').show();
@@ -106,5 +122,31 @@ $(() => {
         $('.bronse').show();
         break;
     }
+  });
+  $('#sort-direction-selector').change(() => {
+    storeToArray();
+    switch ($('#sort-direction-selector').find('option').filter(':selected')[0].innerText) {
+      case 'Ascending':
+        dataArray.sort((a, b) => {
+          const x = a.childNodes[1].innerText.toLowerCase();
+          const y = b.childNodes[1].innerText.toLowerCase();
+          if (x < y) { return -1; }
+          if (x > y) { return 1; }
+          return 0;
+        });
+        break;
+      case 'Descending':
+        dataArray.sort((a, b) => {
+          const x = a.childNodes[1].innerText.toLowerCase();
+          const y = b.childNodes[1].innerText.toLowerCase();
+          if (x < y) { return 1; }
+          if (x > y) { return -1; }
+          return 0;
+        });
+        break;
+      default:
+        break;
+    }
+    moveFromArray();
   });
 });

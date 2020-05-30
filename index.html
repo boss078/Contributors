@@ -22,10 +22,10 @@
         <div class="col"></div>
         <div id="loaded_data_ptr" class="col-lg-8 container-fluid">
           <div class="row contributors__wrapper">
-            <div class="col contributors__header">Avatar</div>
-            <div class="col contributors__header">Login</div>
-            <div class="col contributors__header">Github url</div>
-            <div class="col">
+            <div class="col-2 contributors__header">Avatar</div>
+            <div class="col-3 contributors__header">Login</div>
+            <div class="col-5 contributors__header">Github url</div>
+            <div class="col-2">
               <select id="group-selector" class="custom-select">
                 <option selected>All</option>
                 <option>Gold</option>
@@ -36,7 +36,12 @@
           </div>
             <!-- Loaded data here-->
         </div>
-        <div class="col"></div>
+        <div class="col">
+          <select id="sort-direction-selector" class="custom-select">
+            <option selected>Ascending</option>
+            <option>Descending</option>
+          </select>
+        </div>
       </div>
     </div>
   </body>
