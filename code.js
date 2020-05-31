@@ -1,7 +1,8 @@
 /* eslint-disable jquery/no-hide */
 /* eslint-disable jquery/no-show */
 
-let dataArray;
+let dataArray = [];
+let contributors = [];
 
 function serverError(error) {
   const serverErrorWrapper = $('<div></div>').addClass('row');
@@ -31,6 +32,19 @@ function moveFromArray() {
   $('#loaded_data_ptr').append(dataArray);
 }
 
+async function getAllObjects(objectUrls) {
+  const promises = [];
+  for (let i = 0; i < objectUrls.length; i += 1) {
+    promises.push(fetch(objectUrls[i]).then((objectResponse) => objectResponse.json()));
+  }
+  let results = [];
+  // Now that all the asynchronous operations are running, here we wait until they all complete.
+  await Promise.all(promises).then((localResults) => {
+    results = localResults;
+  });
+  return results;
+}
+
 $(() => {
   fetch('https://api.github.com/repos/thomasdavis/backbonetutorials/contributors')
     .then((response) => {
@@ -42,11 +56,17 @@ $(() => {
     (error) => {
       serverError(error);
     })
-    .then((data) => {
+    .then(async (data) => {
       if (data.constructor === Array) {
+        const urls = [];
+        for (let index = 0; index < data.length; index += 1) {
+          urls.push(data[index].url);
+        }
+        contributors = await getAllObjects(urls);
         for (let index = 0; index < data.length; index += 1) {
           const object = data[index];
-          const elementWrapper = $('<div></div>').addClass('row contributors__wrapper');
+          const contributorWrapper = $('<div></div>').addClass('contributors__wrapper');
+          const elementWrapper = $('<div></div>').addClass('row');
 
           const imageWrapper = $('<div></div>').addClass('col-2 contributors__element-wrapper');
           const elementImage = $('<img></img>').addClass('contributors__avatar');
@@ -67,17 +87,17 @@ $(() => {
           const groupWrapper = $('<div></div>').addClass('col-2 contributors__element-wrapper');
           const elementGroup = $('<div></div>').addClass('contributors__text');
           elementGroup.text('Gold');
-          elementWrapper.addClass('gold');
+          contributorWrapper.addClass('gold');
           if (object.contributions <= 15) {
             elementGroup.text('Silver');
-            elementWrapper.addClass('silver');
-            elementWrapper.removeClass('gold');
+            contributorWrapper.addClass('silver');
+            contributorWrapper.removeClass('gold');
           }
           if (object.contributions <= 5) {
             elementGroup.text('Bronse');
-            elementWrapper.addClass('bronse');
-            elementWrapper.removeClass('gold');
-            elementWrapper.removeClass('silver');
+            contributorWrapper.addClass('bronse');
+            contributorWrapper.removeClass('gold');
+            contributorWrapper.removeClass('silver');
           }
           groupWrapper.append(elementGroup);
 
@@ -97,31 +117,37 @@ $(() => {
           const row2 = $('<div></div>').addClass('row');
           const company = $('<div></div>').addClass('col contributors__text');
           const email = $('<div></div>').addClass('col contributors__text');
+          const row3 = $('<div></div>').addClass('row');
+          const editProfileButton = $('<button>Edit Profile</button>').addClass(`btn btn-primary col modal-${index}`);
+          editProfileButton.attr('type', 'button');
+          editProfileButton.attr('data-toggle', 'modal');
+          editProfileButton.attr('data-target', '#profile-edit-modal');
+          editProfileButton.attr('data-contributor-id', `${index}`);
 
-          fetch(object.url).then((objectResponse) => objectResponse.json())
-            .then((objectData) => {
-              name.text(`Name: ${objectData.name}`);
-              location.text(`Location: ${objectData.location}`);
-              company.text(`Company: ${objectData.company}`);
-              email.text(`Email: ${objectData.email}`);
-            });
+          name.text(`Name: ${contributors[index].name}`);
+          location.text(`Location: ${contributors[index].location}`);
+          company.text(`Company: ${contributors[index].company}`);
+          email.text(`Email: ${contributors[index].email}`);
 
           row1.append(name, location);
           row2.append(company, email);
-          hiddenInfoWrapper.append(row1, row2);
+          row3.append(editProfileButton);
+          hiddenInfoWrapper.append(row1, row2, row3);
 
           elementWrapper.append(imageWrapper, loginWrapper, urlWrapper, groupWrapper, moreWrapper);
-          $('#loaded_data_ptr').append(elementWrapper);
-          $('#loaded_data_ptr').append(hiddenInfoWrapper);
+          contributorWrapper.append(elementWrapper);
+          contributorWrapper.append(hiddenInfoWrapper);
+          $('#loaded_data_ptr').append(contributorWrapper);
         }
       } else {
         noDataError(`${data.message}`);
       }
     },
     (error) => {
-      noDataError(error);
+      serverError(error);
     });
   $('#group-selector').change(() => {
+    $('.collapse').removeClass('show');
     switch ($('#group-selector').find('option').filter(':selected')[0].innerText) {
       default:
       case 'All':
@@ -151,8 +177,8 @@ $(() => {
     switch ($('#sort-direction-selector').find('option').filter(':selected')[0].innerText) {
       case 'Ascending':
         dataArray.sort((a, b) => {
-          const x = a.childNodes[1].innerText.toLowerCase();
-          const y = b.childNodes[1].innerText.toLowerCase();
+          const x = a.childNodes[0].childNodes[1].innerText.toLowerCase();
+          const y = b.childNodes[0].childNodes[1].innerText.toLowerCase();
           if (x < y) { return -1; }
           if (x > y) { return 1; }
           return 0;
@@ -160,8 +186,8 @@ $(() => {
         break;
       case 'Descending':
         dataArray.sort((a, b) => {
-          const x = a.childNodes[1].innerText.toLowerCase();
-          const y = b.childNodes[1].innerText.toLowerCase();
+          const x = a.childNodes[0].childNodes[1].innerText.toLowerCase();
+          const y = b.childNodes[0].childNodes[1].innerText.toLowerCase();
           if (x < y) { return 1; }
           if (x > y) { return -1; }
           return 0;
@@ -171,5 +197,34 @@ $(() => {
         break;
     }
     moveFromArray();
+  });
+  // Triggered when modal is about to be shown
+  $('#profile-edit-modal').on('show.bs.modal', (e) => {
+    $('#modal-first-name').val('');
+    $('#modal-last-name').val('');
+    $('#modal-location').val('');
+    $('#modal-phone').val('');
+    $('#modal-extension').val('');
+    $('#modal-company').val('');
+    $('#modal-email').val('');
+    $('#modal-account-name').text('');
+    $('#modal-account-number').text('');
+
+    const contributorId = $(e.relatedTarget).data('contributor-id');
+    const currObject = contributors[contributorId];
+    if (typeof currObject.name === 'string') {
+      const nameSplitResult = currObject.name.split(' ');
+      $('#modal-first-name').val(nameSplitResult[0]);
+      let lastNameValue = '';
+      for (let i = 1; i < nameSplitResult.length; i += 1) {
+        lastNameValue += `${nameSplitResult[i]} `;
+      }
+      $('#modal-last-name').val(lastNameValue);
+    }
+    $('#modal-location').val(currObject.location);
+    $('#modal-company').val(currObject.company);
+    $('#modal-email').val(currObject.email);
+    $('#modal-account-name').text(currObject.login);
+    $('#modal-account-number').text(currObject.id);
   });
 });

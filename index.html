@@ -45,5 +45,90 @@
         </div>
       </div>
     </div>
+    <!-- The Modal -->
+    <div class="modal fade" id="profile-edit-modal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Profile</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          
+          <form id="profile-edit-form">
+            <!-- Modal body -->
+            <div class="modal-body container">
+              <div class="row">
+                <div class="col form-group">
+                  <label class="modal__input-header" for="modal-first-name">First name*</label>
+                  <input type="text" class="form-control" id="modal-first-name" required>
+                </div>
+                <div class="col form-group">
+                  <label class="modal__input-header" for="modal-last-name">Last name*</label>
+                  <input type="text" class="form-control" id="modal-last-name" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col form-group">
+                  <label class="modal__input-header" for="modal-location">Location*</label>
+                  <input type="text" class="form-control" id="modal-location" required>
+                </div>
+                <div class="col-3 form-group">
+                  <label class="modal__input-header" for="modal-phone">Phone number*</label>
+                  <input type="text" class="form-control" id="modal-phone" required>
+                </div>
+                <div class="col-3 form-group">
+                  <label class="modal__input-header" for="modal-extension">Extension</label>
+                  <input type="text" class="form-control" id="modal-extension">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col form-group">
+                  <label class="modal__input-header" for="modal-company">Company</label>
+                  <input type="text" class="form-control" id="modal-company">
+                </div>
+                <div class="col form-group">
+                  <label class="modal__input-header" for="modal-email">Email</label>
+                  <input type="email" class="form-control" id="modal-email">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <label class="modal__input-header" for="modal-account-name">Account name</label>
+                  <div class="modal__input-text" id="modal-account-name"></div>
+                </div>
+                <div class="col">
+                  <label class="modal__input-header" for="modal-account-number">Account number</label>
+                  <div class="modal__input-text" id="modal-account-number"></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col form-group">
+                  <label class="modal__input-header" for="modal-password-wrapper">Password</label>
+                  <div id="modal-password-wrapper">
+                    <div class="modal__input-subheader">Password Rules</div>
+                    <ul>
+                      <li>Must be 8 characters minimum</li>
+                      <li>Must include uppercase and lowercase letters</li>
+                      <li>Must include a number and/or special characters</li>
+                    </ul>
+                    <input type="password" class="form-control">
+                    <input type="password" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <input type="submit" class="btn btn-success" value="Save">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+            
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
