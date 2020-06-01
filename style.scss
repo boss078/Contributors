@@ -3,6 +3,9 @@ $border-color: #DCDCDC;
 $text-color: #196b19;
 $link-hover: #218d21;
 $title-color: #145314;
+$modal-title: #483D8B;
+$modal-subheader: #808080;
+$modal-info: #C0C0C0;
 
 body {
   background-color: $background-color;
@@ -46,5 +49,31 @@ body {
     font-size: 30px;
     text-align: center;
     color: $text-color;
+  }
+}
+
+.modal {
+  &__title {
+    color: $modal-title;
+  }
+  &__input-header {
+    padding-bottom: 5px;
+  }
+  &__input-field {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  &__list {
+    &__-header {
+      color: $modal-subheader;
+    }
+    &__-item {
+      color: $modal-info;
+      padding-bottom: 5px;
+    }
+  }
+  &__info {
+    color: $modal-info;
+    padding-bottom: 20px  ;
   }
 }

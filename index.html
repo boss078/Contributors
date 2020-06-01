@@ -23,7 +23,11 @@
         <div id="loaded_data_ptr" class="col-lg-8 container-fluid">
           <div class="row contributors__wrapper">
             <div class="col-2 contributors__header">Avatar</div>
-            <div class="col-3 contributors__header">Login</div>
+            <select id="sort-direction-selector" class="col-1 custom-select">
+              <option selected>Ascending</option>
+              <option>Descending</option>
+            </select>
+            <div class="col-2 contributors__header">Login</div>
             <div class="col-4 contributors__header">Github url</div>
             <div class="col-2">
               <select id="group-selector" class="custom-select">
@@ -38,10 +42,7 @@
             <!-- Loaded data here-->
         </div>
         <div class="col">
-          <select id="sort-direction-selector" class="custom-select">
-            <option selected>Ascending</option>
-            <option>Descending</option>
-          </select>
+          
         </div>
       </div>
     </div>
@@ -52,7 +53,7 @@
         
           <!-- Modal Header -->
           <div class="modal-header">
-            <h4 class="modal-title">Profile</h4>
+            <h3 class="modal__title">Profile</h3>
             <button type="button" class="close" data-dismiss="modal">×</button>
           </div>
           
@@ -61,60 +62,67 @@
             <div class="modal-body container">
               <div class="row">
                 <div class="col form-group">
-                  <label class="modal__input-header" for="modal-first-name">First name*</label>
-                  <input type="text" class="form-control" id="modal-first-name" required>
+                  <label class="modal__input-header" for="modal-first-name"><b>FIRST NAME*</b></label>
+                  <input type="text" class="form-control modal__input-field" id="modal-first-name"
+                    required onemptied="setCustomValidity('Please fill this field')">
                 </div>
                 <div class="col form-group">
-                  <label class="modal__input-header" for="modal-last-name">Last name*</label>
-                  <input type="text" class="form-control" id="modal-last-name" required>
+                  <label class="modal__input-header" for="modal-last-name"><b>LAST NAME*</b></label>
+                  <input type="text" class="form-control modal__input-field" id="modal-last-name"
+                    required onemptied="setCustomValidity('Please fill this field')">
                 </div>
               </div>
               <div class="row">
                 <div class="col form-group">
-                  <label class="modal__input-header" for="modal-location">Location*</label>
-                  <input type="text" class="form-control" id="modal-location" required>
+                  <label class="modal__input-header" for="modal-location"><b>LOCATION*</b></label>
+                  <input type="text" class="form-control modal__input-field" id="modal-location"
+                    required onemptied="setCustomValidity('Please fill this field')">
                 </div>
                 <div class="col-3 form-group">
-                  <label class="modal__input-header" for="modal-phone">Phone number*</label>
-                  <input type="text" class="form-control" id="modal-phone" required>
+                  <label class="modal__input-header" for="modal-phone"><b>PHONE NUMBER*</b></label>
+                  <input type="text" class="form-control modal__input-field" id="modal-phone"
+                    required pattern="[0-9]+" title="Please use numbers">
                 </div>
                 <div class="col-3 form-group">
-                  <label class="modal__input-header" for="modal-extension">Extension</label>
-                  <input type="text" class="form-control" id="modal-extension">
+                  <label class="modal__input-header" for="modal-extension"><b>EXTENSION</b></label>
+                  <input type="text" class="form-control modal__input-field" id="modal-extension"
+                    pattern="[0-9]{4}" oninvalid="setCustomValidity('Please use numbers, max length is 4')">
                 </div>
               </div>
               <div class="row">
                 <div class="col form-group">
-                  <label class="modal__input-header" for="modal-company">Company</label>
-                  <input type="text" class="form-control" id="modal-company">
+                  <label class="modal__input-header" for="modal-company"><b>COMPANY</b></label>
+                  <input type="text" class="form-control modal__input-field" id="modal-company">
                 </div>
                 <div class="col form-group">
-                  <label class="modal__input-header" for="modal-email">Email</label>
-                  <input type="email" class="form-control" id="modal-email">
+                  <label class="modal__input-header" for="modal-email"><b>EMAIL</b></label>
+                  <input type="email" class="form-control modal__input-field" id="modal-email"
+                    pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" oninvalid="setCustomValidity('This email is not valid')">
                 </div>
               </div>
               <div class="row">
                 <div class="col">
-                  <label class="modal__input-header" for="modal-account-name">Account name</label>
-                  <div class="modal__input-text" id="modal-account-name"></div>
+                  <label class="modal__input-header" for="modal-account-name"><b>ACCOUNT NAME</b></label>
+                  <div class="modal__info" id="modal-account-name"></div>
                 </div>
                 <div class="col">
-                  <label class="modal__input-header" for="modal-account-number">Account number</label>
-                  <div class="modal__input-text" id="modal-account-number"></div>
+                  <label class="modal__input-header" for="modal-account-number"><b>ACCOUNT NUMBER</b></label>
+                  <div class="modal__info" id="modal-account-number"></div>
                 </div>
               </div>
               <div class="row">
                 <div class="col form-group">
-                  <label class="modal__input-header" for="modal-password-wrapper">Password</label>
+                  <label class="modal__input-header" for="modal-password-wrapper"><b>PASSWORD</b></label>
                   <div id="modal-password-wrapper">
-                    <div class="modal__input-subheader">Password Rules</div>
+                    <div class="modal__list-header">Password Rules</div>
                     <ul>
-                      <li>Must be 8 characters minimum</li>
-                      <li>Must include uppercase and lowercase letters</li>
-                      <li>Must include a number and/or special characters</li>
+                      <li class="modal__list-item">Must be 8 characters minimum</li>
+                      <li class="modal__list-item">Must include uppercase and lowercase letters</li>
+                      <li class="modal__list-item">Must include a number and/or special characters</li>
                     </ul>
-                    <input type="password" class="form-control">
-                    <input type="password" class="form-control">
+                    <input id="psw-main" type="password" class="form-control modal__input-field"
+                      required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="pwd1" onchange="form.pwd2.pattern = RegExp.escape(this.value);">
+                    <input id="psw-secondary" type="password" class="form-control modal__input-field" required name="pwd2">
                   </div>
                 </div>
               </div>

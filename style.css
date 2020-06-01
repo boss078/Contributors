@@ -39,4 +39,26 @@ body {
   color: #196b19;
 }
 
+.modal__title {
+  color: #483D8B;
+}
+.modal__input-header {
+  padding-bottom: 5px;
+}
+.modal__input-field {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.modal__list__-header {
+  color: #808080;
+}
+.modal__list__-item {
+  color: #C0C0C0;
+  padding-bottom: 5px;
+}
+.modal__info {
+  color: #C0C0C0;
+  padding-bottom: 20px;
+}
+
 /*# sourceMappingURL=style.css.map */
