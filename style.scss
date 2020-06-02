@@ -44,6 +44,8 @@ body {
   &__element-wrapper {
     display: flex;
     align-items: center;
+    word-break: break-all;
+    justify-content: flex-end;
   }
   &__error-message {
     font-size: 30px;
@@ -58,6 +60,7 @@ body {
   }
   &__input-header {
     padding-bottom: 5px;
+    word-break: break-all;
   }
   &__input-field {
     padding: 10px;
@@ -75,5 +78,19 @@ body {
   &__info {
     color: $modal-info;
     padding-bottom: 20px  ;
+  }
+}
+.hidable {
+  &__main {
+    display: flex;
+    @media screen and (max-width: 930px) {
+      display: none;
+    }
+  }
+  &__more {
+    display: none;
+    @media screen and (max-width: 930px) {
+      display: flex;
+    }
   }
 }

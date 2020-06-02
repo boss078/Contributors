@@ -68,23 +68,23 @@ $(() => {
           const contributorWrapper = $('<div></div>').addClass('contributors__wrapper');
           const elementWrapper = $('<div></div>').addClass('row');
 
-          const imageWrapper = $('<div></div>').addClass('col-2 contributors__element-wrapper');
+          const imageWrapper = $('<div></div>').addClass('col contributors__element-wrapper');
           const elementImage = $('<img></img>').addClass('contributors__avatar');
           elementImage.attr('src', object.avatar_url);
           imageWrapper.append(elementImage);
 
-          const loginWrapper = $('<div></div>').addClass('col-3 contributors__element-wrapper');
+          const loginWrapper = $('<div></div>').addClass('col contributors__element-wrapper');
           const elementLogin = $('<div></div>').addClass('contributors__text login');
           elementLogin.text(object.login);
           loginWrapper.append(elementLogin);
 
-          const urlWrapper = $('<div></div>').addClass('col-4 contributors__element-wrapper');
+          const urlWrapper = $('<div></div>').addClass('col contributors__element-wrapper hidable__main');
           const elementUrl = $('<a></a>').addClass('contributors__text contributors__link');
           elementUrl.text(object.html_url);
           elementUrl.attr('href', object.html_url);
           urlWrapper.append(elementUrl);
 
-          const groupWrapper = $('<div></div>').addClass('col-2 contributors__element-wrapper');
+          const groupWrapper = $('<div></div>').addClass('col contributors__element-wrapper hidable__main');
           const elementGroup = $('<div></div>').addClass('contributors__text');
           elementGroup.text('Gold');
           contributorWrapper.addClass('gold');
@@ -101,7 +101,7 @@ $(() => {
           }
           groupWrapper.append(elementGroup);
 
-          const moreWrapper = $('<div></div>').addClass('col-1 contributors__element-wrapper');
+          const moreWrapper = $('<div></div>').addClass('col contributors__element-wrapper');
           const elementMore = $('<button></button>').addClass('btn btn-secondary');
           elementMore.attr('data-toggle', 'collapse');
           elementMore.attr('data-target', `#info-${index}`);
@@ -110,6 +110,26 @@ $(() => {
 
           const hiddenInfoWrapper = $('<div>/<div>').addClass('collapse');
           hiddenInfoWrapper.attr('id', `info-${index}`);
+
+          const rowHidden = $('<div></div>').addClass('row hidable__more');
+
+          const urlWrapperCopy = $('<div></div>').addClass('col contributors__element-wrapper');
+          const elementUrlCopy = $('<a></a>').addClass('contributors__text contributors__link');
+          elementUrlCopy.text(object.html_url);
+          elementUrlCopy.attr('href', object.html_url);
+          urlWrapperCopy.append(elementUrlCopy);
+
+          const groupWrapperCopy = $('<div></div>').addClass('col contributors__element-wrapper');
+          const elementGroupCopy = $('<div></div>').addClass('contributors__text');
+          elementGroupCopy.text('Gold');
+          if (object.contributions <= 15) {
+            elementGroupCopy.text('Silver');
+          }
+          if (object.contributions <= 5) {
+            elementGroupCopy.text('Bronse');
+          }
+          groupWrapperCopy.append(elementGroupCopy);
+          rowHidden.append(urlWrapperCopy, groupWrapperCopy);
 
           const row1 = $('<div></div>').addClass('row');
           const name = $('<div></div>').addClass('col contributors__text');
@@ -132,7 +152,7 @@ $(() => {
           row1.append(name, location);
           row2.append(company, email);
           row3.append(editProfileButton);
-          hiddenInfoWrapper.append(row1, row2, row3);
+          hiddenInfoWrapper.append(rowHidden, row1, row2, row3);
 
           elementWrapper.append(imageWrapper, loginWrapper, urlWrapper, groupWrapper, moreWrapper);
           contributorWrapper.append(elementWrapper);
