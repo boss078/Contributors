@@ -66,14 +66,12 @@ body {
     padding: 10px;
     margin-bottom: 10px;
   }
-  &__list {
-    &__-header {
-      color: $modal-subheader;
-    }
-    &__-item {
-      color: $modal-info;
-      padding-bottom: 5px;
-    }
+  &__list-header {
+    color: $modal-subheader;
+  }
+  &__list-item {
+    color: $modal-info;
+    padding-bottom: 5px;
   }
   &__info {
     color: $modal-info;

@@ -52,10 +52,10 @@ body {
   padding: 10px;
   margin-bottom: 10px;
 }
-.modal__list__-header {
+.modal__list-header {
   color: #808080;
 }
-.modal__list__-item {
+.modal__list-item {
   color: #C0C0C0;
   padding-bottom: 5px;
 }
